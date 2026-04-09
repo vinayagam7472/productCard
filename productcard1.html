@@ -2,211 +2,214 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products</title>
 
-    <style>
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: linear-gradient(to right, #f5f7fa, #e4ecf7);
-            margin: 0;
-        }
+<style>
 
-        /* grid layout */
+bobodbody{
+    font-family: Arial, sans-serif;
+    background:#f1f3f6;
+    margin:0;
+}
 
-        #container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            padding: 30px;
-        }
+/* header */
 
-        /* product card */
+.header{
+    background:#2874f0;
+    color:white;
+    padding:14px;
+    font-size:20px;
+    font-weight:bold;
+    text-align:center;
+}
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
+/* product grid */
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
+#container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:25px;
+    padding:25px;
+}
 
-        /* product image */
+/* product card */
 
-        .cards {
-            width: 170px;
-            height: 170px;
-            object-fit: contain;
-            margin-bottom: 10px;
-        }
+.card{
+    background:white;
+    border-radius:8px;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    transition:0.3s;
+}
 
-        /* title */
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 8px 18px rgba(0,0,0,0.18);
+}
 
-        .title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #333;
-            margin: 10px 0;
-            height: 40px;
-            overflow: hidden;
-        }
+/* product image */
 
-        /* price */
+.cards{
+    width:100%;
+    height:190px;
+    object-fit:contain;
+    margin-bottom:8px;
+}
 
-        .price {
-            color: #2e7d32;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+/* slider buttons */
 
-        /* buttons */
+.card button:nth-child(2),
+.card button:nth-child(3){
+    background:#eeeeee;
+    border:none;
+    padding:5px 10px;
+    margin:5px;
+    border-radius:4px;
+    cursor:pointer;
+}
 
-        button {
-            padding: 7px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.25s ease;
-        }
+.card button:nth-child(2):hover,
+.card button:nth-child(3):hover{
+    background:#d6d6d6;
+}
 
-        /* slider buttons */
+/* product title */
 
-        .card button:nth-child(1),
-        .card button:nth-child(3) {
-            background: #eeeeee;
-            color: #333;
-            margin: 5px;
-        }
+.title{
+    font-size:14px;
+    color:#212121;
+    margin:10px 0;
+    height:38px;
+    overflow:hidden;
+}
 
-        .card button:nth-child(1):hover,
-        .card button:nth-child(3):hover {
-            background: #dcdcdc;
-        }
+/* price */
 
-        /* add cart button */
+.price{
+    color:#388e3c;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
 
-        .card button:nth-child(6) {
-            background: #1976d2;
-            color: white;
-        }
+/* add cart button */
 
-        .card button:nth-child(6):hover {
-            background: #0d47a1;
-        }
+.card button:nth-child(6){
+    background:#ff9f00;
+    color:white;
+    border:none;
+    padding:7px 14px;
+    border-radius:5px;
+    cursor:pointer;
+}
 
-        /* cart count */
+.card button:nth-child(6):hover{
+    background:#fb8c00;
+}
 
-        .count {
-            margin-left: 8px;
-            font-weight: bold;
-            color: #333;
-            font-size: 14px;
-        }
-    </style>
+/* cart count */
+
+.count{
+    margin-left:8px;
+    font-weight:bold;
+    color:#333;
+    font-size:15px;
+}
+</style>
 </head>
 
 <body>
 
-    <div id="container"></div>
+<div class="header">🛒 My Shop</div>
 
-    <script>
+<div id="container"></div>
 
-        async function item() {
-            let response = await fetch('https://api.escuelajs.co/api/v1/products')
-            let data = await response.json()
-            return data
+<script>
+
+async function item() {
+    let response = await fetch('https://api.escuelajs.co/api/v1/products')
+    let data = await response.json()
+    return data
+}
+
+item().then((products) => {
+
+    products.forEach(product => {
+
+        let card = document.createElement("div")
+        card.className = "card"
+
+        let image = document.createElement("img")
+        let title = document.createElement("p")
+        let price = document.createElement("p")
+        let button = document.createElement("button")
+        let count = document.createElement("span")
+        let pre = document.createElement("button")
+        let next = document.createElement("button")
+
+        let quantity = 0
+
+        let images = product.images || []
+        let index = 0
+
+        image.src = images.length > 0 ? images[index] : ""
+        image.className = "cards"
+
+        title.innerText = product.title
+        title.className = "title"
+
+        price.innerText = "$" + product.price
+        price.className = "price"
+
+        pre.innerText = "◀"
+        next.innerText = "▶"
+        button.innerText = "Add Cart"
+
+        count.innerText = quantity
+        count.className = "count"
+
+        button.onclick = function () {
+            quantity++
+            count.innerText = quantity
         }
 
-        item().then((products) => {
+        pre.onclick = function () {
+            if (images.length === 0) return
+            index--
+            if (index < 0) {
+                index = images.length - 1
+            }
+            image.src = images[index]
+        }
 
-            products.forEach(product => {
+        next.onclick = function () {
+            if (images.length === 0) return
+            index++
+            if (index >= images.length) {
+                index = 0
+            }
+            image.src = images[index]
+        }
 
-                let card = document.createElement("div")
-                card.className = "card"
+        
+        card.appendChild(image)
+        card.appendChild(pre)
+        card.appendChild(next)
+        card.appendChild(title)
+        card.appendChild(price)
+        card.appendChild(button)
+        card.appendChild(count)
 
-                let image = document.createElement("img")
-                let title = document.createElement("p")
-                let price = document.createElement("p")
-                let button = document.createElement("button")
-                let count = document.createElement("span")
-                let pre = document.createElement("button")
-                let next = document.createElement("button")
+        document.getElementById("container").appendChild(card)
 
-                let quantity = 0
+    })
 
-                // images array
-                let images = product.images || []
-                let index = 0
+})
 
-                // show first image safely
-                image.src = images.length > 0 ? images[index] : ""
-                image.className = "cards"
-
-                title.innerText = product.title
-                title.className = "title"
-
-                price.innerText = "$" + product.price
-                price.className = "price"
-
-                pre.innerText = "◀"
-                next.innerText = "▶"
-                button.innerText = "Add Cart"
-
-                count.innerText = quantity
-                count.className = "count"
-
-                // add cart counter
-                button.onclick = function () {
-                    quantity++
-                    count.innerText = quantity
-                }
-
-                // previous image
-                pre.onclick = function () {
-                    if (images.length === 0) return
-
-                    index--
-                    if (index < 0) {
-                        index = images.length - 1
-                    }
-                    image.src = images[index]
-                }
-
-                // next image
-                next.onclick = function () {
-                    if (images.length === 0) return
-
-                    index++
-                    if (index >= images.length) {
-                        index = 0
-                    }
-                    image.src = images[index]
-                }
-                productCard
-                card.appendChild(pre)
-                card.appendChild(image)
-                card.appendChild(next)
-                card.appendChild(title)
-                card.appendChild(price)
-                card.appendChild(button)
-                card.appendChild(count)
-
-                document.getElementById("container").appendChild(card)
-
-            })
-
-        })
-    </script>
+</script>
 
 </body>
 
