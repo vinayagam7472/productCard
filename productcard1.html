@@ -70,23 +70,21 @@
     <script>
 
         async function item() {
-            let get = await fetch('https://api.escuelajs.co/api/v1/products')
-            let result = await get.json()
-            return result
+            let response = await fetch('https://api.escuelajs.co/api/v1/products')
+            let data = await response.json()
+            return data
         }
 
-        item().then((data) => {
+        item().then((products) => {
 
-            console.log(data)
-
-            data.forEach(item => {
+            products.forEach(product => {
 
                 let card = document.createElement("div")
                 card.className = "card"
 
                 let image = document.createElement("img")
-                let createtitle = document.createElement("p")
-                let createprice = document.createElement("p")
+                let title = document.createElement("p")
+                let price = document.createElement("p")
                 let button = document.createElement("button")
                 let count = document.createElement("span")
                 let pre = document.createElement("button")
@@ -94,17 +92,19 @@
 
                 let quantity = 0
 
-                let images = item.images
+                // images array
+                let images = product.images || []
                 let index = 0
 
-                image.src = images[index]
+                // show first image safely
+                image.src = images.length > 0 ? images[index] : ""
                 image.className = "cards"
 
-                createtitle.innerText = item.title
-                createtitle.className = "title"
+                title.innerText = product.title
+                title.className = "title"
 
-                createprice.innerText = "$" + item.price
-                createprice.className = "price"
+                price.innerText = "$" + product.price
+                price.className = "price"
 
                 pre.innerText = "◀"
                 next.innerText = "▶"
@@ -113,12 +113,16 @@
                 count.innerText = quantity
                 count.className = "count"
 
+                // add cart counter
                 button.onclick = function () {
                     quantity++
                     count.innerText = quantity
                 }
 
+                // previous image
                 pre.onclick = function () {
+                    if (images.length === 0) return
+
                     index--
                     if (index < 0) {
                         index = images.length - 1
@@ -126,7 +130,10 @@
                     image.src = images[index]
                 }
 
+                // next image
                 next.onclick = function () {
+                    if (images.length === 0) return
+
                     index++
                     if (index >= images.length) {
                         index = 0
@@ -137,8 +144,8 @@
                 card.appendChild(pre)
                 card.appendChild(image)
                 card.appendChild(next)
-                card.appendChild(createtitle)
-                card.appendChild(createprice)
+                card.appendChild(title)
+                card.appendChild(price)
                 card.appendChild(button)
                 card.appendChild(count)
 
