@@ -113,8 +113,10 @@
                     count.innerText = quantity
                 }
 
-                let images = [item.image, item.image, item.image] // demo images
+                 let images = item.images
                 let index = 0
+
+                image.src = images[index]
                 pre.onclick = function () {
                     index--
                     if(index<0){
