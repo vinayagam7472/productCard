@@ -70,14 +70,14 @@
     <script>
 
         async function item() {
-            let get = await fetch('https://api.escuelajs.co/api/v1/products')
+            let get = await fetch('https://dummyjson.com/products')
             let result = await get.json()
             return result
         }
 
-        item().then((products) => {
+        item().then((data) => {
 
-            products.forEach(item => {
+            data.products.forEach(item => {
 
                 let card = document.createElement("div")
                 card.className = "card"
@@ -92,7 +92,10 @@
 
                 let quantity = 0
 
-                image.src = item.images // access the one image in the array
+                let images = item.images
+                let index = 0
+
+                image.src = images[index]
                 image.className = "cards"
 
                 createtitle.innerText = item.title
@@ -113,27 +116,22 @@
                     count.innerText = quantity
                 }
 
-                 let images = item.images
-let index = 0
+                pre.onclick = function () {
+                    index--
+                    if (index < 0) {
+                        index = images.length - 1
+                    }
+                    image.src = images[index]
+                }
 
-image.src = images[index]
-image.className = "cards"
+                next.onclick = function () {
+                    index++
+                    if (index >= images.length) {
+                        index = 0
+                    }
+                    image.src = images[index]
+                }
 
-pre.onclick = function () {
-    index--
-    if (index < 0) {
-        index = images.length - 1
-    }
-    image.src = images[index]
-}
-
-next.onclick = function () {
-    index++
-    if (index >= images.length) {
-        index = 0
-    }
-    image.src = images[index]
-}
                 card.appendChild(pre)
                 card.appendChild(image)
                 card.appendChild(next)
@@ -147,7 +145,6 @@ next.onclick = function () {
             })
 
         })
-
     </script>
 
 </body>
