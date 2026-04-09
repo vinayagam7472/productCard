@@ -14,7 +14,7 @@
 
         #container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             padding: 20px;
         }
@@ -87,10 +87,12 @@
                 let createprice = document.createElement("p")
                 let button = document.createElement("button")
                 let count = document.createElement("span")
+                let pre = document.createElement("button")
+                let next = document.createElement("button")
 
                 let quantity = 0
-                
-                image.src = item.images[2] // fixed
+
+                image.src = item.images[2] // access the one image in the array
                 image.className = "cards"
 
                 createtitle.innerText = item.title
@@ -99,6 +101,8 @@
                 createprice.innerText = "$" + item.price
                 createprice.className = "price"
 
+                pre.innerText = "◀"
+                next.innerText = "▶"
                 button.innerText = "Add Cart"
 
                 count.innerText = quantity
@@ -109,7 +113,18 @@
                     count.innerText = quantity
                 }
 
+                let images = [item.image, item.image, item.image] // demo images
+                let index = 0
+                pre.onclick = function () {
+                    index--
+                    if(index<0){
+                        index=images.length-1
+                    }
+                    image.src=images[index]
+                }
+                card.appendChild(pre)
                 card.appendChild(image)
+                card.appendChild(next)
                 card.appendChild(createtitle)
                 card.appendChild(createprice)
                 card.appendChild(button)
