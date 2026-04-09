@@ -114,23 +114,26 @@
                 }
 
                  let images = item.images
-                let index = 0
+let index = 0
 
-                image.src = images[index]
-                pre.onclick = function () {
-                    index--
-                    if(index<0){
-                        index=images.length-1
-                    }
-                    image.src=images[index]
-                }
-                next.onclick=function(){
-                    index++
-                    if(index>=images.length){
-                        index=0
-                    }
-                    image.src=images[index]
-                }
+image.src = images[index]
+image.className = "cards"
+
+pre.onclick = function () {
+    index--
+    if (index < 0) {
+        index = images.length - 1
+    }
+    image.src = images[index]
+}
+
+next.onclick = function () {
+    index++
+    if (index >= images.length) {
+        index = 0
+    }
+    image.src = images[index]
+}
                 card.appendChild(pre)
                 card.appendChild(image)
                 card.appendChild(next)
