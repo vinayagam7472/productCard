@@ -70,14 +70,16 @@
     <script>
 
         async function item() {
-            let get = await fetch('https://dummyjson.com/products')
+            let get = await fetch('https://api.escuelajs.co/api/v1/products')
             let result = await get.json()
             return result
         }
 
         item().then((data) => {
 
-            data.products.forEach(item => {
+            console.log(data)
+
+            data.forEach(item => {
 
                 let card = document.createElement("div")
                 card.className = "card"
